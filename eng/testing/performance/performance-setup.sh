@@ -292,6 +292,9 @@ if [[ -n "$wasm_bundle_directory" ]]; then
     if [[ "$wasmaot" == "true" ]]; then
         extra_benchmark_dotnet_arguments="$extra_benchmark_dotnet_arguments --aotcompilermode wasm --buildTimeout 3600"
     fi
+    setup_arguments="$setup_arguments --dotnet-path $wasm_bundle_directory/dotnet"
+else
+    setup_arguments="$setup_arguments --install-dir $payload_directory/dotnet"
 fi
 
 if [[ -n "$mono_dotnet" && "$monoaot" == "false" ]]; then

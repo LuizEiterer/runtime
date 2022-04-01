@@ -97,12 +97,12 @@ jobs:
         - AdditionalHelixPreCommands: $(HelixPreCommandLinux)
         - AdditionalHelixPostCommands: $(HelixPostCommandsLinux)
 
-    - ${{ if ne(parameters.runtimeType, 'wasm') }}:
-      - dotnetPath: $(PayloadDirectory)/dotnet
-      - ExtraSetupArguments: --install-dir $(dotnetPath)
-    - ${{ if eq(parameters.runtimeType, 'wasm') }}:
-      - dotnetPath: $(PayloadDirectory)/dotnet
-      - ExtraSetupArguments: --dotnet-path $(dotnetPath) --has-workload
+    #- ${{ if ne(parameters.runtimeType, 'wasm') }}:
+      #- dotnetPath: $(PayloadDirectory)/dotnet
+      #- ExtraSetupArguments: --install-dir $(dotnetPath)
+    #- ${{ if eq(parameters.runtimeType, 'wasm') }}:
+      #- dotnetPath: $(PayloadDirectory)/dotnet
+      #- ExtraSetupArguments: --dotnet-path $(dotnetPath) --has-workload
 
     workspace:
       clean: all

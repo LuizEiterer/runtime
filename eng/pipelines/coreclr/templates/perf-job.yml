@@ -150,6 +150,7 @@ jobs:
           mkdir -p $(librariesDownloadDir)/bin/wasm/dotnet &&
           cp -r $(librariesDownloadDir)/BrowserWasm/staging/dotnet-workload/ $(librariesDownloadDir)/bin/wasm/dotnet &&
           cp src/mono/wasm/test-main.js $(librariesDownloadDir)/bin/wasm/wasm-data/test-main.js &&
+          find $(librariesDownloadDir)/bin/wasm -type d &&
           find $(librariesDownloadDir)/bin/wasm -type f -exec chmod 664 {} \;
         displayName: "Create wasm directory (Linux)"
 

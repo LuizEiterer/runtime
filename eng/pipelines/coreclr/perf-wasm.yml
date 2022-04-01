@@ -19,7 +19,7 @@ jobs:
   parameters:
     runProfile: 'option#2'
     #onlySanityCheck: false
-    downloadSpecificBuild:
-      buildId: '1694033'
-      pipeline: 'perf-wasm'
-      branchName: 'refs/pull/67312/head'
+    #downloadSpecificBuild:
+      #buildId: '1694033'
+      #pipeline: 'perf-wasm'
+      #branchName: 'refs/pull/67312/head'

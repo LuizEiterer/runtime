@@ -128,7 +128,7 @@ jobs:
       runProfile: 'option#2'
       # FIXME: just for testing, .. for final, it will be inverted
       onlySanityCheck: true
-      downloadSpecificBuild:
-        buildId: '1694031'
-        pipeline: 'runtime-wasm'
-        branchName: 'refs/pull/67312/head'
+      #downloadSpecificBuild:
+        #buildId: '1694031'
+        #pipeline: 'runtime-wasm'
+        #branchName: 'refs/pull/67312/head'

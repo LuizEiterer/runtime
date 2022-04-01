@@ -101,8 +101,8 @@ jobs:
       - dotnetPath: $(PayloadDirectory)/dotnet
       - ExtraSetupArguments: --install-dir $(dotnetPath)
     - ${{ if eq(parameters.runtimeType, 'wasm') }}:
-      - dotnetPath: $(PayloadDirectory)/dotnet-wasm/dotnet-workload
-      - ExtraSetupArguments: --dotnet-path $(dotnetPath)
+      - dotnetPath: $(PayloadDirectory)/dotnet
+      - ExtraSetupArguments: --dotnet-path $(dotnetPath) --has-workload
 
     workspace:
       clean: all

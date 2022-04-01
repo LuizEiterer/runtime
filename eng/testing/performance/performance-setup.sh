@@ -27,7 +27,7 @@ run_from_perf_repo=false
 use_core_run=true
 use_baseline_core_run=true
 using_mono=false
-wasm_runtime_loc=
+wasm_bundle_directory=
 using_wasm=false
 use_latest_dotnet=false
 logical_machine=
@@ -122,8 +122,8 @@ while (($# > 0)); do
       mono_dotnet=$2
       shift 2
       ;;
-    --wasm)
-      wasm_runtime_loc=$2
+    --wasmbundle)
+      wasm_bundle_directory=$2
       shift 2
       ;;
     --wasmaot)
@@ -163,7 +163,7 @@ while (($# > 0)); do
       echo "  --runcategories <value>        Related to csproj. Categories of benchmarks to run. Defaults to \"coreclr corefx\""
       echo "  --internal                     If the benchmarks are running as an official job."
       echo "  --monodotnet                   Pass the path to the mono dotnet for mono performance testing."
-      echo "  --wasm                         Path to the unpacked wasm runtime pack."
+      echo "  --wasmbundle                   Path to the wasm bundle containing the dotnet, and data needed for helix payload"
       echo "  --wasmaot                      Indicate wasm aot"
       echo "  --latestdotnet                 --dotnet-versions will not be specified. --dotnet-versions defaults to LKG version in global.json "
       echo "  --alpine                       Set for runs on Alpine"
@@ -237,7 +237,7 @@ fi
 
 _BuildConfig="$architecture.$kind.$framework"
 
-if [[ -n "$wasm_runtime_loc" ]]; then
+if [[ -n "$wasm_bundle_directory" ]]; then
     if [[ "$wasmaot" == "true" ]]; then
         configurations="CompilationMode=wasm AOT=true RunKind=$kind"
         _BuildConfig="wasmaot.$_BuildConfig"
@@ -284,11 +284,11 @@ else
     mv $docs_directory $workitem_directory
 fi
 
-if [[ -n "$wasm_runtime_loc" ]]; then
+if [[ -n "$wasm_bundle_directory" ]]; then
     using_wasm=true
-    wasm_dotnet_path=$payload_directory/dotnet-wasm
-    mv $wasm_runtime_loc $wasm_dotnet_path
-    extra_benchmark_dotnet_arguments="$extra_benchmark_dotnet_arguments --wasmEngine /home/helixbot/.jsvu/$javascript_engine --cli \$HELIX_CORRELATION_PAYLOAD/dotnet-wasm/dotnet-workload/dotnet --wasmDataDir \$HELIX_CORRELATION_PAYLOAD/dotnet-wasm/data"
+    wasm_bundle_directory_path=$payload_directory
+    mv $wasm_bundle_directory $wasm_bundle_directory_path
+    extra_benchmark_dotnet_arguments="$extra_benchmark_dotnet_arguments --wasmEngine /home/helixbot/.jsvu/$javascript_engine --cli \$HELIX_CORRELATION_PAYLOAD/dotnet/dotnet --wasmDataDir \$HELIX_CORRELATION_PAYLOAD/wasm-data"
     if [[ "$wasmaot" == "true" ]]; then
         extra_benchmark_dotnet_arguments="$extra_benchmark_dotnet_arguments --aotcompilermode wasm --buildTimeout 3600"
     fi
@@ -306,7 +306,7 @@ if [[ "$monoaot" == "true" ]]; then
     extra_benchmark_dotnet_arguments="$extra_benchmark_dotnet_arguments --runtimes monoaotllvm --aotcompilerpath \$HELIX_CORRELATION_PAYLOAD/monoaot/sgen/mini/mono-sgen --customruntimepack \$HELIX_CORRELATION_PAYLOAD/monoaot/pack --aotcompilermode llvm"
 fi
 
-extra_benchmark_dotnet_arguments="$extra_benchmark_dotnet_arguments --logBuildOutput"
+extra_benchmark_dotnet_arguments="$extra_benchmark_dotnet_arguments --logBuildOutput --generateBinLog"
 
 if [[ "$use_core_run" == true ]]; then
     new_core_root=$payload_directory/Core_Root
